@@ -36,6 +36,17 @@ public class doPost extends CoapResource {
   public void handlePOST(CoapExchange exchange) {
 	logger.log(Level.INFO, "Got message from: " + exchange.getSourcePort());
 	logger.log(Level.INFO, "Message: " + exchange.getRequestText());
+
+	Request request = exchange.advanced().getRequest();
+
+	String query = request.getOptions().getUriQueryString();
+    	String[] str = query.split("=");
+    	int temp;
+    	if (str[0].equals("temp")) {
+      		temp = Integer.parseInt(str[1]);
+      		logger.log(Level.INFO, "Got temperature: " + temp + "C");
+    	}
+
 	if (exchange.getRequestOptions().hasContentFormat()) {
 	  exchange.respond(CHANGED, exchange.getRequestText().toUpperCase(), TEXT_PLAIN);
 	} else {
